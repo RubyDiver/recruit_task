@@ -1,0 +1,22 @@
+<%= link_to 'New Post', new_post_path, class: "btn btn-default btn-lg", id: "new-article-btn" %>
+
+
+<% if @posts.empty? %>
+  <h1 id="no-articles">No Articles Created</h1>
+<% else %>
+  <% @posts.each do |post| %>
+    <div class="well well-lg">
+      <div class="post-id">
+        <%= link_to post.id%>
+      </div>
+      <div class="article-title">
+        <%= link_to post.title, post_path(post) %>
+      </div>
+      <div class="article-body">
+        <%= truncate(post.body, length: 500) %>
+      </div>
+
+    </div>
+
+  <% end %>
+<% end %>

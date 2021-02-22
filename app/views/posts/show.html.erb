@@ -1,0 +1,78 @@
+<article class="detail-article">
+  <h1 class="article-detail-title"><%= @post.title %></h1>
+
+  <div class="glyphicon glyphicon-calendar" id="article-date">
+    <%= @post.created_at.strftime("%b %d %Y") %>
+  </div>
+
+  <div class="article-body">
+    <%= @post.body %>
+  </div>
+
+  <div class="edit-delete">
+    <%= link_to "Edit Article", edit_post_path(@post), class: "btn btn-primary btn-lg btn-space" %>
+    <%= link_to "Delete Article", post_path(@post), method: :delete,
+                data: {confirm: "Are you sure you want to delete article?"},
+                class: "btn btn-primary btn-lg btn-space" %>
+  </div>
+</article>
+<hr>
+<div class="col-md-12">
+  <%= form_for [@post, @comment], remote: true,
+               :html => {class: "form-horizontal", role: "form"} do |f| %>
+    <% if @comment.errors.any? %>
+      <div class="panel panel-danger col-md-offset-1">
+        <div class="panel-heading">
+          <h2 class="panel-title">
+            <%= pluralize(@comment.errors.count, "error") %>
+            prohibited this comment rom being saved:
+          </h2>
+          <div class="panel-body">
+            <ul>
+              <% @comment.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="form-group">
+      <div class="control-label col-md-2">
+        <%= f.label :body, 'New Post' %>
+      </div>
+      <div class="col-md-10">
+        <%= f.text_area :body, rows: 10, class: 'form-control', placeholder: 'Your comment' %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="control-label col-md-offset-2 col-md-10">
+        <%= f.submit "Add Comment", class: "btn btn-primary btn-lg pull-right" %>
+      </div>
+    </div>
+  <% end %>
+</div>
+<div class="col-md-12">
+  <header>
+    <h2>Comments</h2>
+  </header>
+
+  <div class="col-md-10">
+    <% if @post.comments.any? %>
+      <div id="messages">
+        <% (@comments).each do |comment| %>
+          <div class="comment-body">
+            <%= comment.body %>
+          </div>
+          <div class="comment-owner">
+          </div>
+          <hr>
+        <% end %>
+      </div>
+    <% else %>
+      There are no comments to show.
+    <% end %>
+  </div>
+</div>
